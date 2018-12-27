@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_scan"
+            android:title="Scan"
+            android:icon="@drawable/ic_photo_camera_black_24dp"/>
+        <item android:id="@+id/nav_alert"
+            android:title="Notification"
+            android:icon="@drawable/ic_add_alert_black_24dp"/>
+    </group>
+    <item android:title="Communication">
+        <menu>
+            <item android:id="@+id/nav_share"
+                android:title="Share"
+                android:icon="@drawable/ic_share_black_24dp"/>
+            <item android:id="@+id/nav_send"
+                android:title="Send"
+                android:icon="@drawable/ic_send_black_24dp"/>
+        </menu>
+    </item>
+</menu>
