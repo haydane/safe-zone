@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Check-In"
+        android:id="@+id/menu_option_check_in" />
+    <item android:title="Check-Out"
+        android:id="@+id/menu_option_check_out"/>
+    <item android:title="Search"
+        android:id="@+id/menu_option_search"/>
+</menu>
