@@ -10,6 +10,9 @@
 
         <com.camerakit.CameraKitView
             android:id="@+id/camera"
+            app:camera_imageJpegQuality="100"
+            app:camera_imageMegaPixels="2.2"
+            app:camera_aspectRatio="2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
@@ -18,6 +21,14 @@
             app:camera_facing="back"
             app:camera_focus="continuous"
             app:camera_permissions="camera" />
+
+        <Button
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Capture"
+            android:id="@+id/btnCapture"/>
 
 
     </FrameLayout>
