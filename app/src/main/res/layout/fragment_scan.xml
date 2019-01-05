@@ -12,7 +12,7 @@
             android:id="@+id/camera"
             app:camera_imageJpegQuality="100"
             app:camera_imageMegaPixels="2.2"
-            app:camera_aspectRatio="2"
+            app:camera_aspectRatio="2.2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
