@@ -31,5 +31,7 @@
             android:id="@+id/btnCapture"/>
 
 
+
+
     </FrameLayout>
 </RelativeLayout>

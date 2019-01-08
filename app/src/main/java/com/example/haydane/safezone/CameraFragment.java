@@ -14,21 +14,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
-
-
 import com.camerakit.CameraKitView;
 
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 
-import static android.support.constraint.Constraints.TAG;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
 
 public class CameraFragment extends Fragment implements CameraKitView.GestureListener, View.OnClickListener {
+    private static final String TAG = "Tag";
     protected CameraKitView cameraKitView;
     Context context;
     MainActivity activity = (MainActivity)context;
     Button button;
+    String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbkBnbWFpbC5jb20ifQ.7fPKl93r3K93PainE-_GWpQN3qdgvFGHLhOUyDR1nwg";
+
+
+
 
     @Nullable
     @Override
@@ -40,6 +52,7 @@ public class CameraFragment extends Fragment implements CameraKitView.GestureLis
         cameraKitView.setAspectRatio(2.2f);
         button = view.findViewById(R.id.btnCapture);
         button.setOnClickListener(this);
+
         return view;
     }
 
@@ -97,21 +110,25 @@ public class CameraFragment extends Fragment implements CameraKitView.GestureLis
     }
 
     boolean flag = true;
-    int TIME = 0;
+    int TIME = 1;
     public int counter()
     {
         if(flag == true) {
             TIME = 1;
             flag = false;
+            button.setText("Confirm");
         }
-        else
+        if(flag== false)
         {
             flag = true;
             TIME= 2;
+            button.setText("Capture");
         }
         return TIME;
 
     }
+
+    File plate, phone;
 
 
     @Override
@@ -122,8 +139,10 @@ public class CameraFragment extends Fragment implements CameraKitView.GestureLis
 
                 Bitmap bitmap = BitmapFactory.decodeByteArray(capturedImage,0,capturedImage.length);
 
+
                 File savedPhoto = new File(Environment.getExternalStorageDirectory(), "photo_" + System.currentTimeMillis() + ".jpg");
                 try {
+//                    counter();
                     FileOutputStream outputStream = new FileOutputStream(savedPhoto.getPath());
                     outputStream.write(capturedImage);
                     outputStream.close();
@@ -131,9 +150,62 @@ public class CameraFragment extends Fragment implements CameraKitView.GestureLis
                 } catch (java.io.IOException e) {
                     e.printStackTrace();
                 }
+
+//
+//                if(counter()==1)
+//                {
+//                    plate=savedPhoto;
+////                    Toast.makeText(v.getContext(),"plate: " + plate, Toast.LENGTH_LONG ).show();
+//                }
+//                if(counter()==2)
+//                {
+//                    phone=savedPhoto;
+////                    Toast.makeText(v.getContext(),"phone: " + phone , Toast.LENGTH_LONG ).show();
+//                }
+
+
+                    postRequestionToApi(savedPhoto,savedPhoto,token ,true);
+//                    button.setText("Capture");
+
             }
 
         });
 
+
     }
+
+    public void postRequestionToApi(File plate, File phone, String token, boolean checkin)
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.123.8:8000/")
+                .build();
+
+        ApiService api = retrofit.create(ApiService.class);
+        String json = "{ plate: " + plate + ", phone: " + phone +
+                ", token: " + token +
+                ", checkin: " +  checkin  + "}";
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"),json);
+
+        api.postCheckin(requestBody).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try{
+
+                    Log.d(" RetrofitExample: " , response.body().string());
+                }catch (IOException e)
+                {
+                    Log.d(TAG, "onResponse: " , e.fillInStackTrace());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d(TAG, "onFailure: " + t.toString());
+            }
+        });
+
+    }
+
+
 }
