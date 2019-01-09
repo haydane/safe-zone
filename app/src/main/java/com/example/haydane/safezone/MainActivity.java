@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        /// So what's is your problems now. as I see after login it should go to main then in main a yes let me test.ni
+
         if(savedInstanceState == null)
         {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new CameraFragment()).commit();
